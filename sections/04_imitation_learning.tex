@@ -22,7 +22,7 @@ Behavioral Cloning provides a natural platform to learn from real-world interact
 Learning from human demonstrations provides a pragmatic alternative to the RL pipeline discussed in Section~\ref{sec:learning-rl}.
 Indeed, especially in real-world robotics, online exploration is typically \highlight{costly and potentially unsafe}, and designing (dense) reward signals is a \highlight{brittle and task-specific} process.
 Further, even success detection itself often requires bespoke instrumentation, while episodic training demands reliable resets---all factors complicating training RL algorithms on hardware at scale.
-Behavioral Cloning (BC) sidesteps these constraints by \highlight{casting control an imitation learning problem}, leveraging previously collected expert demonstrations to anchor the learned autonomous behavior.
+Behavioral Cloning (BC) sidesteps these constraints by \highlight{casting control as an imitation learning problem}, leveraging previously collected expert demonstrations to anchor the learned autonomous behavior.
 Most notably, by \emph{learning-to-imitate}, autonomous systems naturally adhere to the objectives, preferences, and success criteria implicitly encoded in the data, which reduces early-stage exploratory failures and obviates hand-crafted reward shaping altogether.
 
 Formally, let \( \mathcal D = \{ \tau^{(i)} \}_{i=1}^N \) be a set of expert trajectories, with \( \tau^{(i)} = \{(o_t^{(i)}, a_t^{(i)})\}_{t=0}^{T_i} \) representing the \(i\)-th length-\(T_i\) trajectory in \( \mathcal D \), \(o_t \in \obsspace \) denoting observations (e.g., images and proprioception altogether), and \(a_t \in \actionspace \) the expert actions.
