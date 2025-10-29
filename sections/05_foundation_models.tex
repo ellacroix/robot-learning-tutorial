@@ -137,7 +137,7 @@ Formally, this corresponds to using an attention mask like:
 \end{equation*}
 Note how \emph{intra}-block directional attention allows tokens to communicate freely, while \emph{inter}-block communication is mediated by the attention mask \(\mathbf{A} \).
 \emph{Blockwise causal masking} effectively prevents the pre-trained perception-language tokens from attending to robotics-tokens, likely out of distribution for VLM backbones traditionally trained on large corpora of internet, non-robotics, data.
-Crucially, because communication is obstructed between image-language tokens, proprioperceptive tokens and action tokens, one can cache keys and values across denoising steps at runtime time, incuring in a reduced computational footprint and faster inference.
+Crucially, because communication is obstructed between image-language tokens, proprioperceptive tokens and action tokens, one can cache keys and values across denoising steps at runtime time, incurring in a reduced computational footprint and faster inference.
 
 In \pizero, both the VLM backbone and action expert are update using a \emph{flow matching} loss, and in particular are updated minimizing:
 \begin{align}
@@ -181,7 +181,7 @@ To further optimize performance and reduce inference time,~\citet{black$p_0$Visi
 
 Besides adopting a MoE architecture with a VLM backbone initialized from a pre-trained model and trained jointly with an action expert via flow matching, \pizero~also relies on a unique pre-training corpus comprising of a mix of proprietary and open data totaling 10M+ trajectories, which in their work~\citet{black$p_0$VisionLanguageActionFlow2024} claim to be the largest dataset used to develop a foundational robotics model to date.
 The dataset used to train \pizero---referred to as "the \( \pi \) dataset"---comprises a private, undisclosed portion obtained via expert teleoperation as well as openly available datasets including Open-X and DROID, with only \(\approx 9.1\%\) of the \( \pi \) being openly available.
-In the \( \pi \) dataset, open datasets such as DROID and Open-X are complemeneted with expert trajectories consisting of dexterous demonstrations tasks spanning 7 robot configurations and 68 different tasks.
+In the \( \pi \) dataset, open datasets such as DROID and Open-X are complemented with expert trajectories consisting of dexterous demonstrations tasks spanning 7 robot configurations and 68 different tasks.
 Crucially, \citet{black$p_0$VisionLanguageActionFlow2024} show that pre-training on the \( \pi \) dataset yields a broadly capable base model, which can be adapted via fine-tuning on narrower, higher-quality task data, which induces a fluent multi-stage behavior while retaining robustness.
 In particular,~\citet{black$p_0$VisionLanguageActionFlow2024} report that, across a variety of benchmarks, the version of \pizero~pretrained on the \( \pi \) dataset and fine-tuned on extra high-quality data demonstrations \emph{consistently outperforms} a \( \pi_0^{\text{scratch}} \)~baseline trained entirely from scratch for a given specific task, which further underscores the relevance of pretraining on the \( \pi \) dataset.
 \citet{black$p_0$VisionLanguageActionFlow2024} do also offer an intuition behind this finding: high-quality demonstrations of a given task tend to omit failure data, which inherently prevents an autonomous agent to learn how to recover from near-failure states.
@@ -199,7 +199,7 @@ The emergence of cross-embodiment capabilities is largely to be attributed to th
 
 \subsection{SmolVLA}
 With VLAs in the early stage of development compared to more mature LLMs and VLMs, much of the progress made on VLAs remains proprietary, with many releases exclusively sharing the weights while withholding the data used, full experimental details and essential methodological components of training.
-In constrast with this closed approach, SmolVLA~\citep{shukorSmolVLAVisionLanguageActionModel2025} is an entirely open-source research effort, which aims at democratizing the developments of robotics foundation models by open sourcing the model alongside the data used as well as the training recipes.
+In contrast with this closed approach, SmolVLA~\citep{shukorSmolVLAVisionLanguageActionModel2025} is an entirely open-source research effort, which aims at democratizing the developments of robotics foundation models by open sourcing the model alongside the data used as well as the training recipes.
 
 \begin{figure}
     \centering
@@ -219,7 +219,7 @@ To improve efficiency, the action expert adopts a reduced embedding dimension co
 
 In practice, SmolVLA consumes multi-view RGB images, a natural-language instruction, and projected sensorimotor state token as inputs, together with the noised \emph{action chunk} \( \tilde{a}_{t:t+H_a} \) the action expert \( v_\theta \) is trained to denoise.
 The robot proprioperceptive states are projected to a shared token space with the VLM to match \( d_{\text{VLM}} \), and successively projected into the expert's token space.
-Similarily to \pizero, SmolVLA adopts separate experts communicating exclusively through self-attention layers, which however do not employ blockwise causal attention masking and rather favour simple causal masking.
+Similarly to \pizero, SmolVLA adopts separate experts communicating exclusively through self-attention layers, which however do not employ blockwise causal attention masking and rather favour simple causal masking.
 
 In contrast with \pizero, the action expert interleaves \emph{cross-attention} (CA) and \emph{self-attention} (SA) layers, a choice shown to yield higher success and smoother action chunks in practice.
 While in the expert SA layers tokens are used to obtain queries, keys and values, CA layers use action tokens only as queries, and instead project visual, language and proprioperceptive tokens from the VLM backbone to a shared embedding space to then obtain keys and values.
@@ -232,7 +232,7 @@ Beyond model compactness, SmolVLA also contributes an inference stack that decou
 
 Departing from reliance on proprietary datasets, SmolVLA pretrains exclusively on 450+ \emph{community datasets}, totaling 20k+ trajectories. 
 Because instructions in community contributed dataset can be noisy or missing, the authors re-annotate tasks with a small off-the-shelf VLM using frames sampled from the dataset, and standardize camera viewpoints by mapping sources to a consistent top/wrist/side ordering.
-At test time, similarily to \pizero, SmolVLA forward-integrates flow over 10 steps, resulting in fast inference.
+At test time, similarly to \pizero, SmolVLA forward-integrates flow over 10 steps, resulting in fast inference.
 SmolVLA proves effective across a range of both real-world and simulated environments, rivaling \pizero~while being close to 40\% faster and consuming 6x less memory~\citep{shukorSmolVLAVisionLanguageActionModel2025}.
 
 \subsubsection{Code Example: Using SmolVLA}
